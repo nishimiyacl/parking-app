@@ -1,5 +1,0 @@
-streamlit
-pandas
-geopy
-requests
-beautifulsoup4
