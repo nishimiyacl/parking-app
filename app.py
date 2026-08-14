@@ -2,14 +2,14 @@ import streamlit as st
 import pandas as pd
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
-import urllib.parse  # URLエンコード用
+import urllib.parse
 
 st.set_page_config(page_title="パーキング横断検索", layout="centered", page_icon="🚗")
 
 st.title("🚗 パーキング横断検索")
 st.caption("入力した目的地からの「距離順」や「料金順」でソートできます")
 
-geolocator = Nominatim(user_agent="parking_search_app_v3")
+geolocator = Nominatim(user_agent="parking_search_app_v4")
 
 location_input = st.text_input("目的地（住所や駅名、スポット名を入力）", placeholder="例：東京駅、渋谷区宇田川町")
 
@@ -36,18 +36,18 @@ if st.button("検索する", type="primary") or location_input:
                     st.success(f"📍 目的地を認識しました: **{location.address}**")
                     st.markdown("---")
                     
-                    # URL用に日本語を変換（例：「東京駅」➔ %E6%9D%B1%E4%BA%AC%E9%A0%85）
                     encoded_keyword = urllib.parse.quote(location_input)
                     
-                    # ★各サービスの正しい検索URLに修正
-                    akippa_url = f"https://www.akippa.com/driver/searchk?k={encoded_keyword}"
-                    toku_p_url = f"https://toku-p.earth-car.com/parking-search/{encoded_keyword}"
-                    times_b_url = f"https://btimes.jp/spark/search/list?kw={encoded_keyword}"
+                    # 確実にエラーにならない公式検索・Google検索連携URL
+                    akippa_url = f"https://www.google.com/search?q=akippa+{encoded_keyword}"
+                    toku_p_url = f"https://toku-p.earth-car.com/"
+                    times_b_url = f"https://btimes.jp/"
 
+                    # ※現在は画面動作テスト用のサンプルデータ（3件）です
                     raw_data = [
                         {
                             "サービス": "akippa",
-                            "駐車場名": "akippa 丸の内パーキング",
+                            "駐車場名": "akippa 周辺駐車場一覧",
                             "lat": target_lat + 0.0015,
                             "lon": target_lon + 0.0010,
                             "時間料金": 300,
@@ -56,7 +56,7 @@ if st.button("検索する", type="primary") or location_input:
                         },
                         {
                             "サービス": "特P",
-                            "駐車場名": "特P 大手町駐車場",
+                            "駐車場名": "特P 周辺駐車場一覧",
                             "lat": target_lat - 0.0020,
                             "lon": target_lon - 0.0015,
                             "時間料金": 250,
@@ -65,7 +65,7 @@ if st.button("検索する", type="primary") or location_input:
                         },
                         {
                             "サービス": "タイムズのB",
-                            "駐車場名": "Bタイムズ 〇〇ビルステーション",
+                            "駐車場名": "タイムズのB 周辺駐車場一覧",
                             "lat": target_lat + 0.0035,
                             "lon": target_lon - 0.0005,
                             "時間料金": 400,
@@ -100,7 +100,7 @@ if st.button("検索する", type="primary") or location_input:
                             col2.metric("1時間", f"{row['時間料金']}円")
                             col3.metric("最大", f"{row['最大料金']}円")
                             
-                            st.link_button(f"akippa等で「{location_input}」の空きを見る", row['予約URL'])
+                            st.link_button(f"{row['サービス']}で「{location_input}」周辺を探す", row['予約URL'])
                             st.markdown("---")
 
             except Exception as e:
