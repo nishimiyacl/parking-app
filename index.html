@@ -26,7 +26,9 @@
                 return;
             }
             var encodedKw = encodeURIComponent(kw);
-            window.open('https://www.akippa.com/driver/searchk?k=' + encodedKw, '_blank');
+            
+            // 正しい検索URLに修正
+            window.open('https://www.akippa.com/search/keyword/' + encodedKw, '_blank');
             window.open('https://toku-p.earth-car.com/parking-search/' + encodedKw, '_blank');
             window.open('https://btimes.jp/spark/search/list?kw=' + encodedKw, '_blank');
         }
