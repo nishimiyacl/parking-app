@@ -5,21 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>駐車場一括検索</title>
     <style>
-        body { font-family: sans-serif; padding: 25px 15px; text-align: center; max-width: 480px; margin: 0 auto; }
-        h1 { font-size: 20px; }
-        p { font-size: 13px; color: #666; }
-        input { font-size: 16px; padding: 12px; width: 100%; box-sizing: border-box; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; }
-        button { font-size: 16px; font-weight: bold; padding: 12px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; width: 100%; }
+        body { font-family: sans-serif; padding: 25px 15px; text-align: center; max-width: 480px; margin: 0 auto; background: #f8f9fa; }
+        h1 { font-size: 20px; color: #333; }
+        p { font-size: 13px; color: #666; margin-bottom: 20px; }
+        input { font-size: 16px; padding: 12px; width: 100%; box-sizing: border-box; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 8px; }
+        .btn-group { display: flex; flex-direction: column; gap: 10px; }
+        button { font-size: 15px; font-weight: bold; padding: 14px; color: white; border: none; border-radius: 8px; cursor: pointer; width: 100%; }
+        .btn-akippa { background-color: #28a745; }
+        .btn-tokup { background-color: #ffc107; color: #333; }
+        .btn-tbimes { background-color: #17a2b8; }
     </style>
 </head>
 <body>
     <h1>🚗 駐車場一括検索</h1>
-    <p>目的地を入力してボタンを押すと、3サイトの検索画面が同時に開きます。</p>
+    <p>目的地を入力し、開きたいサイトのボタンを押してください。</p>
+    
     <input type="text" id="keyword" placeholder="例：藤沢駅 南口">
-    <button onclick="searchAll()">一括検索を実行</button>
+
+    <div class="btn-group">
+        <button class="btn-akippa" onclick="openSite('akippa')">1. アキッパ (akippa) で検索</button>
+        <button class="btn-tokup" onclick="openSite('tokup')">2. 特P で検索</button>
+        <button class="btn-tbimes" onclick="openSite('tbimes')">3. タイムズのB で検索</button>
+    </div>
 
     <script>
-        function searchAll() {
+        function openSite(site) {
             var kw = document.getElementById('keyword').value.trim();
             if (!kw) {
                 alert('目的地を入力してください');
@@ -27,10 +37,13 @@
             }
             var encodedKw = encodeURIComponent(kw);
             
-            // 正しい検索URLに修正
-            window.open('https://www.akippa.com/search/keyword/' + encodedKw, '_blank');
-            window.open('https://toku-p.earth-car.com/parking-search/' + encodedKw, '_blank');
-            window.open('https://btimes.jp/spark/search/list?kw=' + encodedKw, '_blank');
+            if (site === 'akippa') {
+                window.open('https://www.akippa.com/search/keyword/' + encodedKw, '_blank');
+            } else if (site === 'tokup') {
+                window.open('https://toku-p.earth-car.com/parking-search/' + encodedKw, '_blank');
+            } else if (site === 'tbimes') {
+                window.open('https://btimes.jp/spark/search/list?kw=' + encodedKw, '_blank');
+            }
         }
     </script>
 </body>
