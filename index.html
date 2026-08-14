@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>駐車場一括検索</title>
+    <style>
+        body { font-family: sans-serif; padding: 25px 15px; text-align: center; max-width: 480px; margin: 0 auto; }
+        h1 { font-size: 20px; }
+        p { font-size: 13px; color: #666; }
+        input { font-size: 16px; padding: 12px; width: 100%; box-sizing: border-box; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; }
+        button { font-size: 16px; font-weight: bold; padding: 12px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; width: 100%; }
+    </style>
+</head>
+<body>
+    <h1>🚗 駐車場一括検索</h1>
+    <p>目的地を入力してボタンを押すと、3サイトの検索画面が同時に開きます。</p>
+    <input type="text" id="keyword" placeholder="例：藤沢駅 南口">
+    <button onclick="searchAll()">一括検索を実行</button>
+
+    <script>
+        function searchAll() {
+            var kw = document.getElementById('keyword').value.trim();
+            if (!kw) {
+                alert('目的地を入力してください');
+                return;
+            }
+            var encodedKw = encodeURIComponent(kw);
+            window.open('https://www.akippa.com/driver/searchk?k=' + encodedKw, '_blank');
+            window.open('https://toku-p.earth-car.com/parking-search/' + encodedKw, '_blank');
+            window.open('https://btimes.jp/spark/search/list?kw=' + encodedKw, '_blank');
+        }
+    </script>
+</body>
+</html>
